@@ -1,0 +1,107 @@
+
+package cs1.CoinsGameApp;
+
+import  cs1.app.*;
+
+public class CoinsGameApp 
+{
+    void drawCirclesRow(double startX, double startY, double radius, int n )
+    {
+        double curX = startX;
+        double curY = startY;
+        
+        int count = 1;
+        
+        while( count <= n )
+        {
+            canvas.drawCircle( curX, curY, radius, "AntiqueWhite" );
+            
+            canvas.drawText( curX, curY, count, "black" );
+            
+            curX = curX + 2 * radius;
+            count = count + 1;
+        }
+    }
+    
+    void drawGameBoard( int topCoins, int botCoins, double radius )
+    {
+        double topX = radius;
+        double topY = canvas.getHeight() / 2;
+        
+        double botX = topX;
+        double botY = topY + 2 * radius;
+        
+        drawCirclesRow( topX, topY, radius, topCoins );
+        drawCirclesRow( botX, botY, radius, botCoins );
+    }
+    
+    void playCoinsGame()
+    {
+        int topCoins = 10;
+        int botCoins = 10;
+        
+        double screenX = canvas.getWidth() / 2;
+        double screenY = canvas.getHeight() / 2;
+        
+        double coinRadius = 32.8;
+        
+        while( topCoins > 0 && botCoins > 0 )
+        {
+            canvas.clear();
+            drawGameBoard( topCoins, botCoins, coinRadius );
+            
+            canvas.sleep( 2 );
+            
+            int curPlayer = 1;
+            
+            if( curPlayer == 1 )
+            {
+                canvas.drawText( screenX, screenY, "BLUE Player's move", "black" );
+                canvas.sleep( 1 );
+            }
+            else
+            {
+                canvas.drawText( screenX, screenY, "RED Player's move", "black" );
+                canvas.sleep(1);
+            }
+            
+            int row = canvas.readInt( "Which row to eliminate?" );
+            int numCoins = canvas.readInt( "How many coins to eliminate?" );
+            
+            if( row == 1 )
+            {
+                topCoins = topCoins - numCoins;
+            }
+            else if( row == 2 )
+            {
+                botCoins = botCoins - numCoins;
+            }
+            else if( row == 3 )
+            {
+                topCoins = topCoins - numCoins;
+                botCoins = botCoins - numCoins;
+            }
+            
+            if(curPlayer == 1 )
+            {
+                curPlayer = 2;
+            }
+            else
+            {
+                curPlayer = 1;
+            }
+        }
+        canvas.drawText( screenX, screenY, "Congratulations!", " black " );   
+    }
+    
+    public void run()
+    {
+        canvas.setLandscape();
+       // drawCirclesRow( 20, 80, 20, 5 );
+        //drawCirclesRow( 50, 200, 15, 8 );
+        
+        //drawGameBoard( 10, 12, 9.2 );
+        //drawGameBoard( 9, 4, 15.5 );
+        playCoinsGame(); 
+    }
+}
